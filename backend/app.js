@@ -10,7 +10,7 @@ app.use("/api/user", router);
 app.use("/api/blog", blogRouter);
 mongoose
   .connect(
-    "mongodb+srv://admin:o3sysdquZXkf1ibz@cluster0.5jprfdr.mongodb.net/blog?retryWrites=true&w=majority"
+    "mongodb://localhost:27017/bloggin-app"
   )
   .then(() => app.listen(5000))
   .then(() =>
