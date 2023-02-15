@@ -4,23 +4,17 @@ import blogRouter from "./routes/blog-routes";
 import router from "./routes/user-routes";
 import cors from "cors";
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 app.use("/api/user", router);
 app.use("/api/blog", blogRouter);
-
-const PORT = 5000;
-const MONGO_URL = "mongodb://localhost:27017/bloggin-app";
-mongoose.set('strictQuery', true);
 mongoose
-  .connect(MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log("DB Connection Successful"))
+  .connect(
+    "mongodb+srv://admin:o3sysdquZXkf1ibz@cluster0.5jprfdr.mongodb.net/blog?retryWrites=true&w=majority"
+  )
+  .then(() => app.listen(5000))
+  .then(() =>
+    console.log("Connected TO Database and Listening TO Localhost 5000")
+  )
   .catch((err) => console.log(err));
-
-app.listen(PORT, () => {
-  console.log("server started on port 5000");
-});
+  // o3sysdquZXkf1ibz
