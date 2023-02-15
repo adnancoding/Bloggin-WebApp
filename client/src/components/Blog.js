@@ -13,16 +13,15 @@ import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useStyles } from "./utils";
+import { host } from "./host";
 const Blog = ({ title, description, imageURL, userName, isUser, id }) => {
-  const classes = useStyles();
   const navigate = useNavigate();
   const handleEdit = () => {
     navigate(`/myBlogs/${id}`);
   };
   const deleteRequest = async () => {
     const res = await axios
-      .delete(`http://localhost:5000/api/blog/${id}`)
+      .delete(`${host}/api/blog/${id}`)
       .catch((err) => console.log(err));
     const data = await res.data;
     return data;
@@ -60,14 +59,14 @@ const Blog = ({ title, description, imageURL, userName, isUser, id }) => {
         <CardHeader
           avatar={
             <Avatar
-              className={classes.font}
+              
               sx={{ bgcolor: "red" }}
               aria-label="recipe"
             >
               {userName ? userName.charAt(0) : ""}
             </Avatar>
           }
-          title={title}
+          title={<h2>{title}</h2>}
         />
         <CardMedia
           component="img"
@@ -80,7 +79,7 @@ const Blog = ({ title, description, imageURL, userName, isUser, id }) => {
           <hr />
           <br />
           <Typography
-            className={classes.font}
+            
             variant="body2"
             color="text.secondary"
           >

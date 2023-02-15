@@ -4,6 +4,9 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { authActions } from "../store";
 import { useNavigate } from "react-router-dom";
+import { host } from "./host";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Auth = () => {
   const naviagte = useNavigate();
@@ -14,29 +17,53 @@ const Auth = () => {
     password: "",
   });
   const [isSignup, setIsSignup] = useState(false);
+  const toastOptions = {
+    position: "top-center",
+    autoClose: 8000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: "dark",
+  };
   const handleChange = (e) => {
     setInputs((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value,
     }));
   };
+  const handleValidation = () => {
+    const { password, name, email } = inputs;
+    if (password.length < 2) {
+      toast.error(
+        "Password should be equal or greater than 8 characters.",
+        toastOptions
+      );
+      return false;
+    } else if (email === "") {
+      toast.error("Email is required.", toastOptions);
+      return false;
+    }
+
+    return true;
+  };
   const sendRequest = async (type = "login") => {
-    const res = await axios
-      .post(`http://localhost:5000/api/user/${type}`, {
+    if (handleValidation()) {
+      const res = await axios.post(`${host}/api/user/${type}`, {
         name: inputs.name,
         email: inputs.email,
         password: inputs.password,
-      })
-      .catch((err) => console.log(err));
+      });
 
-    const data = await res.data;
-    console.log(data);
-    return data;
+      const data = await res.data;
+      if (data.status == false) {
+        toast.error(data.message, toastOptions);
+      }
+      console.log(data);
+      return data;
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(inputs);
     if (isSignup) {
       sendRequest("signup")
         .then((data) => localStorage.setItem("userId", data.user._id))
@@ -63,6 +90,7 @@ const Auth = () => {
           margin="auto"
           marginTop={5}
           borderRadius={5}
+          bgcolor="#757de8"
         >
           <Typography variant="h2" padding={3} textAlign="center">
             {isSignup ? "Signup" : "Login"}
@@ -96,18 +124,19 @@ const Auth = () => {
             type="submit"
             variant="contained"
             sx={{ borderRadius: 3, marginTop: 3 }}
-            color="warning"
+            color="inherit"
           >
             Submit
           </Button>
           <Button
             onClick={() => setIsSignup(!isSignup)}
-            sx={{ borderRadius: 3, marginTop: 3 }}
+            sx={{ borderRadius: 3, marginTop: 3, color: "#000000" }}
           >
-            Change To {isSignup ? "Login" : "Signup"}
+            Change to {isSignup ? "Login" : "Signup"}
           </Button>
         </Box>
       </form>
+      <ToastContainer />
     </div>
   );
 };
