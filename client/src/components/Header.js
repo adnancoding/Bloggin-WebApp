@@ -37,7 +37,7 @@ const Header = () => {
               <Tab
                 
                 LinkComponent={Link}
-                to="/blogs"
+                to="/"
                 label="All Blogs"
               />
               <Tab

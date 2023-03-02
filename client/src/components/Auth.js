@@ -6,6 +6,7 @@ import { authActions } from "../store";
 import { useNavigate } from "react-router-dom";
 import { host } from "./host";
 import { ToastContainer, toast } from "react-toastify";
+import loader from "../assets/loader.gif";
 import "react-toastify/dist/ReactToastify.css";
 
 const Auth = () => {
@@ -17,6 +18,7 @@ const Auth = () => {
     password: "",
   });
   const [isSignup, setIsSignup] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const toastOptions = {
     position: "top-center",
     autoClose: 8000,
@@ -64,20 +66,29 @@ const Auth = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     if (isSignup) {
       sendRequest("signup")
         .then((data) => localStorage.setItem("userId", data.user._id))
         .then(() => dispath(authActions.login()))
-        .then(() => naviagte("/blogs"));
+        .then(()=> setIsLoading(false))
+        .then(() => naviagte("/"));
     } else {
       sendRequest()
         .then((data) => localStorage.setItem("userId", data.user._id))
         .then(() => dispath(authActions.login()))
-        .then(() => naviagte("/blogs"));
+        .then(()=> setIsLoading(false))
+        .then(() => naviagte("/"));
     }
   };
   return (
     <div>
+      {isLoading ? (
+        <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <h2>Loading...</h2>
+          <img src={loader} alt="loader" />
+          </div>
+      ) : (
       <form onSubmit={handleSubmit}>
         <Box
           maxWidth={400}
@@ -136,6 +147,7 @@ const Auth = () => {
           </Button>
         </Box>
       </form>
+      )}
       <ToastContainer />
     </div>
   );
