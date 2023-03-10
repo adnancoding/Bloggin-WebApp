@@ -35,7 +35,7 @@ const AddBlog = () => {
     console.log(inputs);
     sendRequest()
       .then((data) => console.log(data))
-      .then(() => navigate("/blogs"));
+      .then(() => navigate("/"));
   };
   return (
     <div>

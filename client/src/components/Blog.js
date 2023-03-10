@@ -28,16 +28,16 @@ const Blog = ({ title, description, imageURL, userName, isUser, id }) => {
   };
   const handleDelete = () => {
     deleteRequest()
-      .then(() => navigate("/"))
-      .then(() => navigate("/blogs"));
+      .then(() => navigate("/"));
   };
   return (
     <div>
       {" "}
       <Card
         sx={{
-          width: "40%",
-          margin: "auto",
+          width: {xs:"80%", sm:"70%", md:"60%", lg:"50%"},
+          marginLeft:{xs:"25%", sm:"25%"},
+
           mt: 2,
           padding: 2,
           boxShadow: "5px 5px 10px #ccc",
@@ -70,7 +70,7 @@ const Blog = ({ title, description, imageURL, userName, isUser, id }) => {
         />
         <CardMedia
           component="img"
-          height="194"
+          height="350"
           image={imageURL}
           alt="Paella dish"
         />

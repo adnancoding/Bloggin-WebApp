@@ -21,10 +21,11 @@ const Header = () => {
       position="sticky"
       sx={{
         background: "black",
+        width:{xs:600, sm:1000, md:1200, lg:1500, xl:2040}
       }}
     >
       <Toolbar>
-        <Typography variant="h4">
+        <Typography variant="h4" sx={{fontSize:{xs:20}}}>
           Blogging-Spot
         </Typography>
         {isLoggedIn && (
